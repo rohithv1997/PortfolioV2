@@ -21,4 +21,9 @@
     <Content Include=".github\workflows\deploy.yml" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <StaticWebAssetBasePath>PortfolioV2</StaticWebAssetBasePath>
+  </PropertyGroup>
+
+
 </Project>
