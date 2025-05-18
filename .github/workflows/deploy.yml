@@ -18,20 +18,22 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'  # or your actual version
+          dotnet-version: '8.0.x'  # or your actual version
 
       - name: Publish Blazor WebAssembly app
         run: dotnet publish -c Release -o publish -p:StaticWebAssetBasePath=PortfolioV2
 
-      - name: Copy wwwroot to gh-pages
+      - name: Deploy to gh-pages
         run: |
-          cd publish/wwwroot
-          touch .nojekyll
-          git init
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add .
-          git commit -m "Deploy to GitHub Pages"
-          git branch -M gh-pages
-          git remote add origin https://github.com/${{ github.repository }}.git
-          git push --force origin gh-pages
+            mkdir temp-gh-pages
+            cp -r publish/wwwroot/* temp-gh-pages/
+            cd temp-gh-pages
+            touch .nojekyll
+            git init
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            git add .
+            git commit -m "Deploy to GitHub Pages"
+            git branch -M gh-pages
+            git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+            git push --force origin gh-pages
