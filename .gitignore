@@ -3,6 +3,7 @@
 bin/
 obj/
 .idea/
+config/
 
 # Common node modules locations
 /node_modules
