@@ -1,0 +1,29 @@
+@using System.Text.Json
+@typeparam T
+
+@if (_data == null)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true"/>
+}
+else
+{
+    @ChildContent(_data)
+}
+
+@code
+{
+    private T? _data;
+    [Inject] private HttpClient? Http { get; set; }
+    [Parameter] [EditorRequired] public required string FilePath { get; set; }
+    [Parameter] [EditorRequired] public required RenderFragment<T> ChildContent { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var json = await Http?.GetStringAsync(FilePath)!;
+        var options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+        _data = JsonSerializer.Deserialize<T>(json, options);
+    }
+}
