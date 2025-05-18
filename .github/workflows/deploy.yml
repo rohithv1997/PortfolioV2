@@ -2,7 +2,7 @@ name: Deploy Blazor WASM to GitHub Pages
 
 on:
   push:
-    branches: [master]  # or 'master' if your default branch is master
+    branches: [master]  # or your default branch
 
 permissions:
   contents: write
@@ -25,15 +25,16 @@ jobs:
 
       - name: Deploy to gh-pages
         run: |
-            mkdir temp-gh-pages
-            cp -r publish/wwwroot/* temp-gh-pages/
-            cd temp-gh-pages
-            touch .nojekyll
-            git init
-            git config user.name "github-actions"
-            git config user.email "github-actions@github.com"
-            git add .
-            git commit -m "Deploy to GitHub Pages"
-            git branch -M gh-pages
-            git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-            git push --force origin gh-pages
+          set -e
+          mkdir temp-gh-pages
+          cp -r publish/wwwroot/PortfolioV2/* temp-gh-pages/
+          cd temp-gh-pages
+          touch .nojekyll
+          git init
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "Deploy to GitHub Pages"
+          git branch -M gh-pages
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git push --force origin gh-pages
